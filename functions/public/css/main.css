@@ -1,0 +1,226 @@
+/*index*/
+.jumbotron {
+	background-color: #2e2d88;
+	color: white;
+}
+.tab-content {
+	border-left: 1px solid #ddd;
+	border-right: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	padding: 10px;
+}
+.formtabs {
+	margin-left: 10%;
+	margin-right: 10%;
+}
+.nav-tabs {
+	margin-bottom: 0;
+}
+.navbar-header {
+	width: 45%;
+}
+.navbar {
+	padding-top: 1%;
+	padding-bottom: 1%;
+	margin-bottom: 0px;
+}
+.sectionheader {
+	text-align: center;
+}
+.coursename {
+	font-size: 20px;
+}
+.attendanceform {
+	padding-right: 10em;
+	padding-left: 10em;
+	padding-top: 1em;
+	padding-bottom: 1em;
+	margin-right: auto;
+	margin-left: auto;
+}
+/*attendance*/
+.modcode {
+	margin-top: 1.8%;
+	position: relative;
+	font-size: 20px;
+}
+.videofeed {
+	background-color: #f8f8f8;
+	color: #777;
+	width: 560px;
+	height: 315px;
+	border: 1px solid #e7e7e7;
+}
+.list-group {
+	width: 48%;
+}
+.list-group-item.disabled {
+	background: #f8f8f8;
+	font-size: 18px;
+}
+.badge {
+	background: #58d68d;
+}
+.actionsect {
+	margin-top: 23em;
+	padding: 18px;
+	background-color: #f8f8f8;
+	color: #777;
+	width: 560px;
+	border: 1px solid #e7e7e7;
+}
+.checks {
+	padding-top: 5px;
+}
+.present {
+	height: 28.3em;
+	overflow: scroll;
+	overflow-x: hidden;
+}
+.thumbnail {
+	max-width: 100px;
+	/*  overflow-x: hidden;*/
+}
+.labels {
+	/*
+    position: absolute;
+    bottom: 1.5em;
+*/
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	text-align: center;
+}
+/*register*/
+h3 {
+	margin-top: 10px;
+}
+/* .row {
+	width: 100%;
+	padding-left: 1%;
+} */
+.regvideofeed {
+	background-color: #f8f8f8;
+	color: #777;
+	width: 560px;
+	height: 315px;
+	border: 1px solid #e7e7e7;
+}
+
+.input-group-lg > .form-control,
+.input-group-lg > .input-group-addon,
+.input-group-lg > .input-group-btn > .btn {
+	font-size: 15px;
+}
+.input-group {
+	padding-left: 2%;
+	width: 50%;
+}
+.input-group-addon {
+	width: 10em;
+	font-size: 10px;
+}
+.registerform {
+	/*	padding-left: 2%;*/
+	width: 100%;
+}
+.submitbtn {
+	margin-top: 2%;
+	width: 48%;
+	background-color: green;
+}
+/*
+.submitbtn:disabled{
+	margin-top: 2%;
+	width: 48%;
+	background-color: green;
+}
+.submitbtn:hover:enabled{
+    background-color: green;
+}
+.submitbtn:active:enabled{
+    background-color: green;
+}
+*/
+.resetbtn {
+	margin-top: 2%;
+	width: 48%;
+}
+.previewbtn {
+	width: 100%;
+	margin-left: 2.5%;
+	margin-top: 10%;
+	padding: 12%;
+}
+.screencontainer {
+	position: relative;
+	padding-top: 1.7em;
+}
+.preview {
+	background-color: #ffffff;
+	color: #777;
+	width: 165px;
+	max-width: 165px;
+	height: 220px;
+	border: 1px solid #e7e7e7;
+	text-align: center;
+	line-height: 15em;
+}
+.captureStat {
+	margin-top: 10%;
+	margin-left: 2.5%;
+}
+.formstatus {
+	font-size: 25px;
+}
+/*archives*/
+.sectionheader {
+	text-align: center;
+}
+.coursename {
+	font-size: 20px;
+}
+/*password*/
+.passwordform {
+	padding-right: 20em;
+	padding-left: 20em;
+	padding-top: 1em;
+	padding-bottom: 1em;
+	margin-right: auto;
+	margin-left: auto;
+}
+/*dashboard*/
+.dash-list-group {
+	width: 105%;
+}
+.dash-present {
+	height: 25em;
+	overflow: scroll;
+	overflow-x: hidden;
+}
+.addform {
+	padding-right: 20em;
+	padding-left: 20em;
+	padding-top: 1em;
+	padding-bottom: 1em;
+	margin-right: auto;
+	margin-left: auto;
+}
+.enrollform {
+	margin-left: 2em;
+}
+.dashformstatus {
+	font-size: 15px;
+	text-align: center;
+	margin-top: 5%;
+	margin-left: 2em;
+}
+.dashformstatus2 {
+	font-size: 15px;
+	text-align: center;
+	margin-top: 2%;
+}
+.dashthumbnail {
+	height: 14em;
+	/*  overflow-x: hidden;*/
+}

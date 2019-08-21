@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<script src="\dist\face-api.js"></script>
+		<script src="\js\common.js"></script>
+		<script src="\js\constants.js"></script>
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+		<link
+			rel="stylesheet"
+			type="text/css"
+			href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
+		/>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/main.css" />
+
+		<link rel="apple-touch-icon" sizes="180x180" href="../img/favicon_io/apple-touch-icon.png" />
+		<link rel="icon" type="image/png" sizes="32x32" href="../img/favicon_io/favicon-32x32.png" />
+		<link rel="icon" type="image/png" sizes="16x16" href="../img/favicon_io/favicon-16x16.png" />
+
+		<title>Meddic</title>
+	</head>
+	<body>
+		<!-- Collapsible Navigation Bar -->
+		<div class="container">
+			<!-- .navbar-fixed-top, or .navbar-fixed-bottom can be added to keep the nav bar fixed on the screen -->
+			<nav class="navbar navbar-default">
+				<div class="container-fluid">
+					<!-- Brand and toggle get grouped for better mobile display -->
+					<div class="navbar-header">
+						<!-- Button that toggles the navbar on and off on small screens -->
+						<button
+							type="button"
+							class="navbar-toggle collapsed"
+							data-toggle="collapse"
+							data-target="#bs-example-navbar-collapse-1"
+							aria-expanded="false"
+						>
+							<!-- Hides information from screen readers -->
+							<span class="sr-only"></span>
+
+							<!-- Draws 3 bars in navbar button when in small mode -->
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+
+						<!-- You'll have to add padding in your image on the top and right of a few pixels (CSS Styling will break the navbar) -->
+						<a href="/" class="pull-left" href="#">Meddic</a>
+					</div>
+
+					<!-- Collect the nav links, forms, and other content for toggling -->
+					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+						<!-- navbar-left will move the search to the left -->
+						<form class="navbar-form navbar-right" role="search">
+							<div class="form-group">
+								<input type="text" class="form-control" placeholder="Search" />
+							</div>
+							<button type="submit" class="btn btn-default" disabled>Submit</button>
+						</form>
+						<ul class="nav navbar-nav navbar-right">
+							<li><a href="/registration">Register</a></li>
+						</ul>
+					</div>
+					<!-- /.navbar-collapse -->
+				</div>
+				<!-- /.container-fluid -->
+			</nav>
+
+			<div class="attendanceheader clearfix">
+				<h2 id="sessionTitle" class="pull-left">Meddic - Augmenting the healthcare sector in Singapore</h2>
+			</div>
+
+			<!-- Thumbnails -->
+			<div class="jumbotron regvideofeed pull-left">
+				<video
+					onplay="onPlay(this);"
+					id="inputVideo"
+					class="regvideofeed"
+					style="position:relative; bottom: 3.5em; right: 4.35em;"
+					autoplay
+				></video>
+				<canvas id="overlay" style="position:relative; bottom: 26.4em; right: 4.35em;"></canvas>
+			</div>
+
+			<ul class="list-group pull-right">
+				<!-- Disable elements -->
+				<li class="list-group-item disabled">Patients detected</li>
+				<li class="list-group-item present">
+					<div id="patientList" class="container"></div>
+				</li>
+			</ul>
+		</div>
+	</body>
+	<script>
+		/* When page is loaded */
+		document.onload = run();
+
+		/* Global Constants and Variables */
+		const inputVideo = document.getElementById("inputVideo");
+		const canvas = document.getElementById("overlay");
+		const mtcnnOptions = new faceapi.MtcnnOptions(mtcnnParams);
+
+		var labeledFaceDescriptors = [];
+		var allPatients = [];
+
+		/* When page loads - Executed once */
+		async function run() {
+			/* Load Models */
+			await loadModels();
+
+			/* Request Camera Stream */
+			requestCameraStream(inputVideo);
+
+			getPatients();
+		}
+
+		/* Recalling function on each frame of inputVideo */
+		async function onPlay(inputVideo) {
+			/* Get all face descriptors of inputVideo */
+			let fullFaceDescriptions = await faceapi
+				.detectAllFaces(inputVideo, mtcnnOptions)
+				.withFaceLandmarks()
+				.withFaceDescriptors();
+
+			/* Resize canvas and results */
+			fullFaceDescriptions = resizeCanvasAndResults(canvas, inputVideo, fullFaceDescriptions);
+
+			/* Only proceed if labeledFaceDescriptors is loaded */
+			if (labeledFaceDescriptors.length > 0) {
+				/* Create a face matcher with parameters */
+				const maxDescriptorDistance = globalThreshold; // Threshold (Lower number = closer match)
+				const faceMatcher = new faceapi.FaceMatcher(labeledFaceDescriptors, maxDescriptorDistance);
+
+				/* For every face detected, find a best match */
+				const results = fullFaceDescriptions.map(fd => faceMatcher.findBestMatch(fd.descriptor));
+
+				/* Create a BoxWithText object */
+				const labeledResults = results.map((bestMatch, i) => {
+					const box = fullFaceDescriptions[i].detection.box;
+					const text = bestMatch.toString();
+
+					if (bestMatch.distance <= strictThreshold) {
+						updatePatients(bestMatch.label); // To keep track of each detected face
+						// captureScreenshot(x, y)
+					}
+
+					const boxWithText = new faceapi.BoxWithText(box, text);
+					return boxWithText;
+				});
+
+				/* Draw BoxWithText object */
+				faceapi.drawDetection(canvas, labeledResults);
+			}
+
+			/* Calls this function again */
+			setTimeout(() => onPlay(inputVideo));
+		}
+
+		function loadLabeledFaceDescriptors(persons) {
+			persons.forEach(person => {
+				// var size = person["_descriptors"].length;
+				var descriptor = new Float32Array(128);
+				for (var j = 0; j < 128; j++) {
+					descriptor[j] = parseFloat(person["descriptors"][j]);
+				}
+				var eachPerson = [];
+				eachPerson.push(descriptor);
+
+				labeledFaceDescriptors.push(new faceapi.LabeledFaceDescriptors(person["nric"], eachPerson));
+			});
+		}
+
+		function updatePatients(detectedNRIC) {
+			allPatients.forEach(patient => {
+				if (patient.nric == detectedNRIC && !patient.isDetected) {
+					patient.isDetected = true;
+					patient.timestamp = Date.now();
+
+					$("#patientList").prepend(
+						`<div class="row"><div class="col-sm-1"><div class="thumbnail"><img src="` +
+							patient.imageURL +
+							`"></></div></div><div class="col-sm-11"><b>NRIC</b>: ` +
+							patient.nric +
+							`</br><b>Name</b>: ` +
+							patient.fullName +
+							`</br><b>Gender</b>: ` +
+							patient.gender +
+							`</br><b>Date of Birth</b>: ` +
+							patient.dateOfBirth +
+							`</br><b>Drug Allergies</b>: ` +
+							patient.drugAllergies +
+							`</br><b>Pre-Exising Conditions</b>: ` +
+							patient.preExisting +
+							`</br><b>Other Comments</b>: ` +
+							patient.comments +
+							`</div></div>`
+					);
+				}
+			});
+		}
+
+		function loadAllPatients(patients) {
+			patients.forEach(patient => {
+				patient["isDetected"] = false;
+				patient["timestamp"] = "";
+			});
+			allPatients = patients;
+		}
+
+		function getPatients() {
+			$.ajax({
+				type: "POST",
+				url: "/api/getPatients",
+				datatype: "json",
+				contentType: "application/json",
+				success: function(res) {
+					if (res.length > 0) {
+						loadLabeledFaceDescriptors(res);
+						loadAllPatients(res);
+					} else {
+						console.error("No patients found");
+						// TO-DO: Display on page
+					}
+				},
+				error: function() {
+					console.error("Error getting patients.");
+				},
+				data: null
+			});
+		}
+	</script>
+</html>

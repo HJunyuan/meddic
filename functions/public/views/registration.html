@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<script src="..\dist\face-api.js"></script>
+		<script src="..\js\common.js"></script>
+		<script src="..\js\constants.js"></script>
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+		<link
+			rel="stylesheet"
+			type="text/css"
+			href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
+		/>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/main.css" />
+
+		<link rel="apple-touch-icon" sizes="180x180" href="../img/favicon_io/apple-touch-icon.png" />
+		<link rel="icon" type="image/png" sizes="32x32" href="../img/favicon_io/favicon-32x32.png" />
+		<link rel="icon" type="image/png" sizes="16x16" href="../img/favicon_io/favicon-16x16.png" />
+
+		<title>Meddic</title>
+	</head>
+	<body>
+		<!-- Collapsible Navigation Bar -->
+		<div class="container">
+			<!-- .navbar-fixed-top, or .navbar-fixed-bottom can be added to keep the nav bar fixed on the screen -->
+			<nav class="navbar navbar-default">
+				<div class="container-fluid">
+					<!-- Brand and toggle get grouped for better mobile display -->
+					<div class="navbar-header">
+						<!-- Button that toggles the navbar on and off on small screens -->
+						<button
+							type="button"
+							class="navbar-toggle collapsed"
+							data-toggle="collapse"
+							data-target="#bs-example-navbar-collapse-1"
+							aria-expanded="false"
+						>
+							<!-- Hides information from screen readers -->
+							<span class="sr-only"></span>
+
+							<!-- Draws 3 bars in navbar button when in small mode -->
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+
+						<!-- You'll have to add padding in your image on the top and right of a few pixels (CSS Styling will break the navbar) -->
+						<a href="/" class="pull-left">Meddic</a>
+					</div>
+
+					<!-- Collect the nav links, forms, and other content for toggling -->
+					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+						<!-- navbar-left will move the search to the left -->
+						<form class="navbar-form navbar-right" role="search">
+							<div class="form-group">
+								<input type="text" class="form-control" placeholder="Search" />
+							</div>
+							<button type="submit" class="btn btn-default" disabled>Search</button>
+						</form>
+						<ul class="nav navbar-nav navbar-right">
+							<li><a href="#">Register</a></li>
+						</ul>
+					</div>
+					<!-- /.navbar-collapse -->
+				</div>
+				<!-- /.container-fluid -->
+			</nav>
+
+			<div class="attendanceheader clearfix">
+				<h2 class="pull-left">Registration</h2>
+				<!--    <h3 class="pull-right">CZ2003&ensp;|&ensp;SSP4</h2>-->
+			</div>
+
+			<!-- Thumbnails -->
+			<div class="row">
+				<div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+					<h3>Step 1:</h3>
+					<form id="registrationForm" class="registerform" action="/api/newregistration" method="post">
+						<div class="form-group">
+							<label for="fullName">Full Name</label>
+							<input type="text" class="form-control" id="fullName" placeholder="Enter full name" required />
+						</div>
+						<div class="form-group">
+							<label for="nric">NRIC</label>
+							<input type="text" class="form-control" id="nric" placeholder="Enter NRIC" required />
+						</div>
+						<div class="form-group">
+							<label for="gender">Gender</label>
+							<input type="radio" id="gender" name="gender" value="Male" checked /> Male
+							<input type="radio" id="gender" name="gender" value="Female" /> Female
+						</div>
+						<div class="form-group">
+							<label for="dateOfBirth">Date of Birth</label>
+							<input type="text" class="form-control" id="dateOfBirth" placeholder="Enter date of birth" required />
+						</div>
+						<div class="form-group">
+							<label for="drugAllergies">Drug Allergies</label>
+							<textarea
+								rows="4"
+								cols="50"
+								maxlength="2000"
+								id="drugAllergies"
+								placeholder="List your drug allergies (if any)"
+							></textarea>
+						</div>
+						<div class="form-group">
+							<label for="preExisting">Pre-Existing medical conditons</label>
+							<textarea
+								rows="4"
+								cols="50"
+								maxlength="2000"
+								type="textarea"
+								id="preExisting"
+								placeholder="List your pre-existing medical conditions (if any)"
+							></textarea>
+						</div>
+						<div class="form-group">
+							<label for="drugAllergies">Other comments</label>
+							<textarea
+								rows="4"
+								cols="50"
+								maxlength="2000"
+								type="textarea"
+								id="comments"
+								placeholder="Comments (if any)"
+							></textarea>
+						</div>
+
+						<button
+							type="reset"
+							class="btn btn-primary resetbtn pull-left"
+							onclick="clearCapturedImg(); clearRegStatus();"
+						>
+							Reset
+						</button>
+						<button id="registerBtn" type="submit" class="btn btn-primary submitbtn pull-right">
+							Register
+						</button>
+					</form>
+				</div>
+
+				<div class="col-lg-2 col-md-4 col-sm-12 col-xs-12">
+					<h3>Step 2:</h3>
+					<div class="screencontainer">
+						<div class="preview"><img class="preview" id="captured_img" /></div>
+						<button class="btn btn-block previewbtn" id="startCaptureBtn" onclick="onPlay();">
+							<i class="fa fa-camera"></i><br />
+							Auto Capture
+						</button>
+						<div class="captureStat" id="captureStatus"></div>
+					</div>
+				</div>
+
+				<div class="col-lg-6 col-md-8 col-sm-12 col-xs-12 screencontainer">
+					<h3><br /></h3>
+					<div class="jumbotron regvideofeed">
+						<video
+							onplay=""
+							id="inputVideo"
+							class="regvideofeed"
+							style="position:relative; bottom: 3.5em; right: 4.35em;"
+							autoplay
+						></video>
+						<canvas id="overlay" style="position:relative; bottom: 26.4em; right: 4.35em;"></canvas>
+					</div>
+					<div class="formstatus" id="registerStatus"></div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script>
+		/* When page is loaded */
+		document.onload = run();
+
+		/* Global Constants and Variables */
+		const inputVideo = document.getElementById("inputVideo");
+		const canvas = document.getElementById("overlay");
+		const mtcnnOptions = new faceapi.MtcnnOptions(mtcnnParams);
+
+		/* Buttons */
+		const captureBtn = document.getElementById("captureBtn");
+		const registerBtn = document.getElementById("registerBtn");
+		const startCaptureBtn = document.getElementById("startCaptureBtn");
+
+		var fullFaceDescription;
+
+		async function run() {
+			/* Load Models */
+			await loadModels();
+
+			/* Request Camera Stream */
+			requestCameraStream(inputVideo);
+
+			/* Form Focus */
+			document.getElementById("fullName").focus();
+		}
+
+		/* Recalling function on each frame of inputVideo */
+		async function onPlay() {
+			/* Get HTML Elements */
+			const capturedImg = document.getElementById("captured_img");
+			const captureStatus = document.getElementById("captureStatus");
+
+			captureStatus.innerHTML = "Looking for faces...";
+
+			/* Detect Single Face */
+			// detect the face with the highest score in the image and compute it's landmarks and face descriptor
+			fullFaceDescription = await faceapi
+				.detectSingleFace(inputVideo, mtcnnOptions)
+				.withFaceLandmarks()
+				.withFaceDescriptor();
+
+			/* If no face detected, keep looping */
+			if (!fullFaceDescription) {
+				setTimeout(() => onPlay()); // Calls this function again
+			} else {
+				/* Store detected coordinates (before resizing!) */
+				const currFaceCoord = {
+					x: fullFaceDescription.detection.box.x,
+					y: fullFaceDescription.detection.box.y
+				};
+
+				/* Set Thumbnail */
+				capturedImg.src = captureAndCrop(inputVideo, currFaceCoord.x, currFaceCoord.y, 300, 400);
+
+				/* Resize canvas and results */
+				fullFaceDescription = resizeCanvasAndResults(canvas, inputVideo, fullFaceDescription);
+
+				/* Draw detections */
+				faceapi.drawDetection(canvas, fullFaceDescription.detection, { withScore: true });
+
+				captureStatus.innerHTML =
+					"Successfully detected!</br>Please ensure captured image is <b>correct</b>. You may choose to press capture again.";
+			}
+		}
+
+		/* Register button onClick */
+		$("#registrationForm").submit(function(event) {
+			event.preventDefault(); //prevent default action
+			let post_url = $(this).attr("action"); //get form action url
+
+			/* Lock state: Face descriptor */
+			// let labeledFaceDescriptor = new faceapi.LabeledFaceDescriptors(matric, [fullFaceDescription.descriptor]);
+
+			if (!fullFaceDescription) {
+				$("#registerStatus").html("Please re-capture face.");
+				return;
+			}
+
+			/* Create person object */
+			let patient = {
+				fullName: $("#fullName").val(),
+				nric: $("#nric").val(),
+				gender: $("#gender").val(),
+				dateOfBirth: $("#dateOfBirth").val(),
+				drugAllergies: $("#drugAllergies").val(),
+				preExisting: $("#preExisting").val(),
+				comments: $("#comments").val(),
+				descriptors: fullFaceDescription.descriptor,
+				imageURL: $("#captured_img").attr("src")
+			};
+
+			$("#registerStatus").html("Registering...");
+
+			$.ajax({
+				url: post_url,
+				type: "POST",
+				dataType: "json",
+				contentType: "application/json",
+				success: function(res) {
+					$("#registerStatus").html(res.msg);
+
+					/* Clear captured image thumbnail */
+					clearCapturedImg();
+				},
+				error: function(res) {
+					console.error(res);
+				},
+				data: JSON.stringify(patient)
+			});
+		});
+
+		function clearCapturedImg() {
+			fullFaceDescription = null;
+			$("#captured_img").attr(
+				"src",
+				"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+			);
+			$("#captureStatus").html("");
+		}
+
+		function clearRegStatus() {
+			$("#registerStatus").html("");
+		}
+	</script>
+</html>
