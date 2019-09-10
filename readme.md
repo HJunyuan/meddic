@@ -1,5 +1,7 @@
-# Meddic - Augmenting the healthcare sector in Singapore
+# 🩺 Meddic - Augmenting the healthcare sector in Singapore
 Quickly identify and provide critical patient information to first responders with facial recognition.
+
+![Screenshot of Meddic](https://github.com/HJunyuan/meddic/blob/master/meddic.jpg?raw=true "Screenshot of Meddic")
 
 This web application was submitted as part of our team's attempt in the [HackNTU hackathon](https://devpost.com/software/meddic-jgd6hy).
 
