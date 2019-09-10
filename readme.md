@@ -1,87 +1,32 @@
-# BitScan - Face Recognition Attendance Taking
+# Meddic - Augmenting the healthcare sector in Singapore
+Quickly identify and provide critical patient information to first responders with facial recognition.
 
-One Paragraph of project description goes here
+This web application was submitted as part of our team's attempt in the [HackNTU hackathon](https://devpost.com/software/meddic-jgd6hy).
 
-## Getting Started
+## Inspiration
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+Our team was looking to make use of facial recognition technology to augment the healthcare sector in Singapore. Are we able to move away from identifying patients through a physical NRIC card? With the push of the smart nation initiative, we built Meddic to help clinics and hospitals to leverage image recognition technology, making it easy to identify patients and quickly obtain all their medical information.
 
-### Prerequisites
+## What it does
 
-What things you need to install the software and how to install them
+Using a simple application, nurses in clinics and hospitals can easily register patients to see doctors without the need for patients to carry along their NRIC card. Once registered, all medical details (i.e. pre-existing medical conditions, drug allergies, blood type etc.) are fetched from the database and made available to the doctors immediately.
 
-```
-Give examples
-```
+First responders that attend to victims will also be able to take advantage of Meddic. With a simple scan, all pre-existing medical conditions, drug allergies and blood type will be displayed on the application. This allows doctors/nurses to quickly attend to patients with the necessary precautions as quickly as possible rather than looking for physical identification that the patient may not be holding at the time.
 
-### Installing
-
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
+We believe this will help push the Smart nation initiative by removing the reliance on physical forms and NRIC for registration purposes. This would be used to send patients through faster processing and access to healthcare as efficiently as possible.
 
 ## Built With
 
-- [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-- [Maven](https://maven.apache.org/) - Dependency Management
-- [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+- Node.js
+- Firebase
+- [Face API](https://github.com/justadudewhohacks/face-api.js)
 
-## Contributing
+## The Team
 
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+- **Kyle Huang Junyuan** - [HJunyuan](https://github.com/HJunyuan)
+- **Russell Chua**
+- **Raymond Tan**
 
-## Versioning
+****
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags).
-
-## Authors
-
-- **Billie Thompson** - _Initial work_ - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-- Hat tip to anyone whose code was used
-- Inspiration
-- etc
+**Important note**: This repository is no longer maintained.
