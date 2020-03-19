@@ -12,10 +12,12 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 
 /* Firebase Initialisation */
+var serviceAccount = require("../private/meddic-57a28-firebase-adminsdk-lhwmy-a07a940214.json");
 admin.initializeApp({
-	credential: admin.credential.applicationDefault(),
+	credential: admin.credential.cert(serviceAccount),
 	databaseURL: "https://meddic-57a28.firebaseio.com"
 });
+
 const database = admin.database();
 
 /* Define directories */
@@ -27,7 +29,9 @@ const viewsDir = path.join(publicDir, "views");
 app.get("/", (req, res) => res.sendFile(path.join(viewsDir, "index.html")));
 
 // Registration Page
-app.get("/registration", (req, res) => res.sendFile(path.join(viewsDir, "registration.html")));
+app.get("/registration", (req, res) =>
+	res.sendFile(path.join(viewsDir, "registration.html"))
+);
 
 /* ================= API: POST Requests ================= */
 // New Student Registration
@@ -44,7 +48,17 @@ app.post("/api/newregistration", (req, res) => {
 	const descriptors = person.descriptors;
 	const imageURL = person.imageURL;
 
-	regPatient(fullName, nric, gender, dateOfBirth, drugAllergies, preExisting, comments, descriptors, imageURL);
+	regPatient(
+		fullName,
+		nric,
+		gender,
+		dateOfBirth,
+		drugAllergies,
+		preExisting,
+		comments,
+		descriptors,
+		imageURL
+	);
 
 	res.setHeader("Content-Type", "application/json");
 	res.end(JSON.stringify({ msg: "Successfully registered!" }));
@@ -75,7 +89,17 @@ app.use(function(req, res, next) {
 });
 
 /* ================= Functions ================= */
-function regPatient(fullName, nric, gender, dateOfBirth, drugAllergies, preExisting, comments, descriptors, imageURL) {
+function regPatient(
+	fullName,
+	nric,
+	gender,
+	dateOfBirth,
+	drugAllergies,
+	preExisting,
+	comments,
+	descriptors,
+	imageURL
+) {
 	let databaseRef = database.ref("patients");
 	databaseRef = databaseRef.child(nric);
 
